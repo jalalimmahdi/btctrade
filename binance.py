@@ -127,7 +127,17 @@ def binance_klines(symbol=mysymbol,myinterval=mytimeframe,limit=10,startTime=151
     data=funcGetDataFromBinance(query)
     return data
 
-#To show list of bids and asks (just for help me)
+#this function works just for 1min timeframe
+#to get all of kandle stcik data of a ONE DAY
+def binance_klines_day(beginTime=1514752200000):
+    myData_part1=binance_klines(mysymbol,'1m',720,beginTime)
+    newTime=beginTime+720000 #(720*1000)
+    myData_part2=binance_klines(mysymbol,'1m',720,newTime)
+    myData=myData_part1+myData_part2
+    #print(len(myData))
+    return myData
+        
+#To show a list of binance_klines() function 
 def binance_klines_PrintData():
     myData=binance_klines(symbol=mysymbol,myinterval=mytimeframe,limit=5)
     # print(myData)

@@ -14,6 +14,8 @@ print(binance.binance_findServerTime())
 #binance.binance_tradesList_old_PrintData()
 #This dont work without registerting
 
-binance.binance_klines_PrintData()
+#binance.binance_klines_PrintData()
 
-binance.hour_toMilisecond()
+#binance.hour_toMilisecond()
+
+binance.binance_klines_day()
