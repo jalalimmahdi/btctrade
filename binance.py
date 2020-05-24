@@ -31,8 +31,8 @@ def binance_exchangeInfo():
     data=funcGetDataFromBinance(query_info)
     return data
 
-
-#this prints list of bids and asks in Binance
+################################################################
+#to get list of bids and asks from binance
 # Limit 	            Weight
 # 5, 10, 20, 50, 100 	1
 # 500                	5
@@ -56,7 +56,10 @@ def binance_orderBook_printData(symbol=mysymbol,limit=10):
     print('List of Asks: ')
     for x in asks:
         print(x)
+################################################################
 
+
+################################################################
 #To show list of bids and asks (just for help me)
 def binance_tradesList_recent(symbol=mysymbol,limit=10):
     query_orderbook=f"/api/v3/trades?symbol={symbol}&limit={limit}"
@@ -64,4 +67,13 @@ def binance_tradesList_recent(symbol=mysymbol,limit=10):
 
     return data
 
-        
+def binance_tradesList_recent_PrintData():
+    myData=binance_tradesList_recent(symbol=mysymbol,limit=20)
+    for x in myData:
+        print('*'*50)
+        print(f"id: {x.get('id')}")
+        print(f"price: {x.get('price')}")
+        print(f"qty: {x.get('qty')}")
+        print(f"time: {x.get('time')}")
+        print(f"isBuyerMaker: {x.get('isBuyerMaker')}")
+        print(f"isBestMatch: {x.get('isBestMatch')}")
