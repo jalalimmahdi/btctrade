@@ -1,6 +1,8 @@
 import requests
 import json
 import datetime
+import time
+
 import setting
 
 mysymbol=setting.symbol
@@ -122,18 +124,22 @@ def binance_tradesList_old_PrintData():
 # endTime 	LONG 	NO 	
 # limit 	INT 	NO 	        Default 500; max 1000.
 
-def binance_klines(symbol=mysymbol,myinterval=mytimeframe,limit=10,startTime=1514752200000):
-    query=f"/api/v3/klines?symbol={symbol}&interval={myinterval}&limit={limit}&startTime={startTime}"
+def binance_klines(symbol=mysymbol,myinterval=mytimeframe,limit=10,startThisTime=0):
+    query=f"/api/v3/klines?symbol={symbol}&interval={myinterval}&limit={limit}&startTime={startThisTime}"
     data=funcGetDataFromBinance(query)
     return data
 
 #this function works just for 1min timeframe
 #to get all of kandle stcik data of a ONE DAY
-def binance_klines_day(beginTime=1514752200000):
-    myData_part1=binance_klines(mysymbol,'1m',720,beginTime)
-    newTime=beginTime+720000 #(720*1000)
-    myData_part2=binance_klines(mysymbol,'1m',720,newTime)
-    myData=myData_part1+myData_part2
+def binance_klines_day(beginTime,numberOf12Hours=1):
+    myData=[]
+    for i in range(0,numberOf12Hours):
+        myData_part=binance_klines(mysymbol,'1m',720,startThisTime=beginTime)
+        beginTime=beginTime+43200000 #(720*1000*60)
+        # print(myData_part[-1][0])
+        # print(beginTime)
+        myData=myData+myData_part
+        time.sleep(2)
     #print(len(myData))
     return myData
         
@@ -179,7 +185,7 @@ def binance_klines_PrintData():
 
 ################################################################
 #this function gives year,month,date and hour and returned the milisecond of the time
-def hour_toMilisecond(year=2018,month=1,date=1,hour=0):
+def hour_toMilisecond(year=2019,month=1,date=1,hour=0):
     time_this=datetime.datetime(year,month,date,hour,0,0)
     miliseconds=int(round(time_this.timestamp() * 1000))
     print(miliseconds)
