@@ -17,7 +17,7 @@ oneMinMilisecond=60000
 mycursor.execute("SELECT * FROM `bit_binance_1m` ORDER BY `bit_binance_1m`.`OpenTime` ASC")
 # mycursor.execute("SELECT * FROM `bit_binance_1m` WHERE `OpenTime` > 1590409260000")
 myresult = mycursor.fetchall()
-thisTime=1546288140000
+thisTime=1514752140000
 int_counter=0
 
 for x in myresult:
@@ -32,3 +32,6 @@ for x in myresult:
             int_counter+=1
 
 print(f"Number of probelms: {int_counter}")
+
+mycursor.close()
+mydb.close()

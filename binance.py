@@ -5,6 +5,8 @@ import time
 
 import setting
 
+#Refernce: https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#signed-trade-and-user_data-endpoint-security
+
 mysymbol=setting.symbol
 mytimeframe=setting.TimeFrame
 

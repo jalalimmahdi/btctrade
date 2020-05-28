@@ -18,8 +18,8 @@ import setting
 
 #binance.binance_klines_PrintData()
 
-myTime=binance.hour_toMilisecond(year=2019,month=1,date=1,hour=0)
-
+# myTime=binance.hour_toMilisecond(year=2018,month=6,date=7,hour=0)
+myTime=1539462600000
 #binance.binance_klines_day()
 
 mydb = mysql.connector.connect(
@@ -31,7 +31,7 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor()
-sql = "INSERT INTO bit_binance_1m (OpenTime, Open, High, Low, Close,Volume, NumberOfTrades) VALUES (%s, %s,%s, %s, %s, %s, %s)"
+sql = "INSERT INTO bit_binance_1m (OpenTime, Open, High, Low, Close,Volume, NumberOfTrades,problemCode) VALUES (%s, %s,%s, %s, %s, %s, %s,%s)"
 # val = [
 #   [32323, 23,10,0,0,232,3],
 #   [32323, 23,10,0,0,232,3]
@@ -40,7 +40,7 @@ sql = "INSERT INTO bit_binance_1m (OpenTime, Open, High, Low, Close,Volume, Numb
 repeatNumber=2
 MainRepeatNumber=365
 NumberOfRows=0
-nowIAm=1590406508245
+nowIAm=1546288200000   #begin of 2019, by now we have 735362 records
 
 while myTime<1590406508245:
     DataRaw_oneDay=binance.binance_klines_day(beginTime=myTime,numberOf12Hours=repeatNumber)
@@ -54,6 +54,7 @@ while myTime<1590406508245:
         newLine.append(float(x[4]))
         newLine.append(float(x[5]))
         newLine.append(x[8])
+        newLine.append(0)
         val.append(newLine)
     #print(val)
     mycursor.executemany(sql, val)

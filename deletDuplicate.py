@@ -16,6 +16,7 @@ mycursor = mydb.cursor()
 #در اینجا مواردی که تکراری هستند را پیدا میکنیم
 mycursor.execute("SELECT * FROM bit_binance_1m GROUP BY `OpenTime` HAVING COUNT(`OpenTime`) > 1")
 myresult = mycursor.fetchall()
+howmany=len(myresult)
 
 for x in myresult:
     #برای هر کدام از موارد تکراری لیست تمامی آیتم ها را پیدا میکنیم
@@ -25,6 +26,8 @@ for x in myresult:
     # در حلقه ی زیر اولین مورد تکراری را حذف میکنیم
     for y in myresult2:
         print(y)
+        howmany-=1
+        print(howmany)
         if (DoDlete==True):
             mycursor.execute(f"DELETE FROM `bit_binance_1m` WHERE `bit_binance_1m`.`id` = {y[0]}")
             DoDlete=False
