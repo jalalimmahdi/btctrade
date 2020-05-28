@@ -2,6 +2,8 @@ import requests
 import json
 import datetime
 import time
+import hmac
+import hashlib
 
 import setting
 
@@ -12,6 +14,7 @@ mytimeframe=setting.TimeFrame
 
 API_EndPoint="https://api.binance.com"
 
+################################################################
 def funcGetDataFromBinance(myQuery):
     link = f"{API_EndPoint}{myQuery}"
     print(f"command is: {link}")
@@ -21,7 +24,10 @@ def funcGetDataFromBinance(myQuery):
     jsonMarketData = json.loads(myfile)        #Converts STR to Json
     #Data = jsonMarketData["data"]
     return jsonMarketData
+################################################################
 
+
+################################################################
 def binance_findServerTime():
     query_ServerTime="/api/v3/time"
     data=funcGetDataFromBinance(query_ServerTime)
@@ -29,12 +35,17 @@ def binance_findServerTime():
     ServerTime_TimeStamp=data.get('serverTime')/1000
     Server_Time = datetime.datetime.fromtimestamp(ServerTime_TimeStamp).ctime()
     return Server_Time
+################################################################
 
+
+################################################################
 # پرینت لیستی از نمادها و وضعیت هر یک
 def binance_exchangeInfo():
     query_info="/api/v3/exchangeInfo"
     data=funcGetDataFromBinance(query_info)
     return data
+################################################################
+
 
 ################################################################
 #to get list of bids and asks from binance
@@ -97,9 +108,15 @@ def binance_tradesList_recent_PrintData():
 # limit 	INT 	NO 	Default 500; max 1000.
 # fromId 	LONG 	NO 	TradeId to fetch from. Default gets most recent trades.
 # it needs signature and it do not works simple
-def binance_tradesList_old(symbol=mysymbol,limit=10):
-    query_tradeListOld=f"/api/v3/historicalTrades?symbol={symbol}&limit={limit}&fromId=327029379"
+def binance_tradesList_old(symbol=mysymbol,limit=10,fromId=327029379,akey="1",skey=""):
+    
+    query1=f"symbol={symbol}&limit={limit}&fromId={fromId}"
+    
+    m = hmac.new(akey.encode('utf-8'), query1.encode('utf-8'), hashlib.sha256).hexdigest()
+    query_tradeListOld=f"/api/v3/historicalTrades?{m}"
+
     data=funcGetDataFromBinance(query_tradeListOld)
+    print(data)
     return data
 
 def binance_tradesList_old_PrintData():
@@ -193,4 +210,3 @@ def hour_toMilisecond(year=2019,month=1,date=1,hour=0):
     print(miliseconds)
     return miliseconds
 ################################################################
-
